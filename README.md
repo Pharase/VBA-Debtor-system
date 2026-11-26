@@ -8,7 +8,7 @@ The system integrates email attachment processing, data comparison, file generat
 ## ⚙️ How It Works (Overview)
 
 1. **Start the automation**  
-   Run `Run_Payment.bat` to kick off the entire process.
+   Copy `.env.template` to `.env`, fill in your values, then run `Run_Payment_SECURE.bat` to kick off the entire process.
 
 2. **Email attachment download & preprocessing**  
    - Automatically saves attached payment files from email.
@@ -36,7 +36,7 @@ The system integrates email attachment processing, data comparison, file generat
 
 | File/Script                | Description                                                                 |
 |----------------------------|-----------------------------------------------------------------------------|
-| `run_payment.bat`          | Starts the entire workflow                                                  |
+| `Run_Payment_SECURE.bat`   | Starts the entire workflow (credentials and paths come from `.env`)        |
 | `payment.xlsm`             | Prepares intermediate data file                                            |
 | `trans_program17_4.xlsm`   | Main UI for recording transactions per debtor                              |
 | `summary.py`               | Python script to generate and email summary reports                        |
@@ -61,3 +61,11 @@ The system integrates email attachment processing, data comparison, file generat
 - Required Python packages:  
   ```bash
   pip install openpyxl pandas pywin32
+
+---
+
+## 🔐 Security notes
+
+- Credentials and file paths are read from `.env` (see `.env.template`); `.env` is git-ignored.
+- The real workbooks contain debtor data and are **not** in this repository. Their VBA code is exported
+  to [`vba/`](vba/) so it can be read and reviewed; `_*.xlsx` files are header-only templates.

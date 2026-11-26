@@ -1,0 +1,7 @@
+# secrets: copy .env.template to .env and fill it in locally
+.env
+# real debtor workbooks never go in git; only header-only templates (_*.xlsx) are tracked
+*.xlsm
+*.xlsx
+!_*.xlsx
+__pycache__/
