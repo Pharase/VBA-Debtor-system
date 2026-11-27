@@ -45,6 +45,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 import pandas as pd
+from settings import read_excel
 
 
 def get_credentials():
@@ -280,10 +281,10 @@ def process_payment_data():
         return False
     
     latest_sheet = month_sheet_names[-1]
-    df_temp = pd.read_excel(cf_file, sheet_name=latest_sheet, usecols="B", dtype=str, skiprows=[0])
+    df_temp = read_excel(cf_file, sheet_name=latest_sheet, usecols="B", dtype=str, skiprows=[0])
     last_row = df_temp["Month"].last_valid_index() + 1
     
-    df = pd.read_excel(cf_file, sheet_name=latest_sheet, skiprows=[0], usecols=columns_to_keep, nrows=last_row, dtype=str)
+    df = read_excel(cf_file, sheet_name=latest_sheet, skiprows=[0], usecols=columns_to_keep, nrows=last_row, dtype=str)
     
     # Get summary for deduplication
     summary_dir = paths['summary_report_dir']
@@ -298,7 +299,7 @@ def process_payment_data():
     if summary_file:
         # Perform deduplication
         dupplicate_summary = ["account_code", "EFF_Date", "Pay_Date"]
-        summary_df = pd.read_excel(summary_file, usecols=dupplicate_summary, dtype=str)
+        summary_df = read_excel(summary_file, usecols=dupplicate_summary, dtype=str)
         summary_df.replace("-", pd.NA, inplace=True)
         summary_df.dropna(inplace=True)
         

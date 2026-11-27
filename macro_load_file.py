@@ -1,6 +1,7 @@
 import win32com.client as win32
 import os
 import time
+from settings import data_path
 
 def run_excel_macro(file_path, macro_name):
     if not os.path.exists(file_path):
@@ -42,5 +43,5 @@ def run_excel_macro(file_path, macro_name):
         print(f"Error: {e}")
 
 # === Example Usage ===
-xlsm_path = r"C:\card_data\processing\program\_Payment_report_template_v7.xlsm"
+xlsm_path = data_path(r"processing\program\_Payment_report_template_v7.xlsm")
 run_excel_macro(xlsm_path,macro_name="Create_report_payment")

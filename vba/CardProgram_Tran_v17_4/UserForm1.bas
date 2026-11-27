@@ -146,7 +146,7 @@ Private Sub CommandButton1_Click()
 
     ' Define the default folder path to search
 
-    folderPath = "C:\card_data\payment\" ' <-- Adjust this path as needed
+    folderPath = Environ("DATA_ROOT") & "\payment\" ' <-- Adjust this path as needed
 
     
 
@@ -278,7 +278,7 @@ Private Sub CommandButton1_Click()
 
     Set xlApp = CreateObject("Excel.Application")
 
-    'foundFile = FindExcelFile("C:\Users\" & User_name & "\Shared Drive\Team Data\Data For QMC\Payment Term\Cutoff-beta\Payment report\", "Data_Status")
+    'foundFile = FindExcelFile(Environ("SHARED_DIR") & "\Cutoff-beta\Payment report\", "Data_Status")
 
     On Error Resume Next
 
@@ -286,9 +286,9 @@ Private Sub CommandButton1_Click()
 
     If test_mode Then
 
-        MainPath = "C:\tools\cut-off\Testing env\_Data_for_Cut_off_Table.xlsx"
+        MainPath = Environ("TOOLS_DIR") & "\Testing env\_Data_for_Cut_off_Table.xlsx"
 
-        MacroPath = "C:\tools\cut-off\Cut_off\Cut-Off-Database_marco.xlsm"
+        MacroPath = Environ("TOOLS_DIR") & "\Cut_off\Cut-Off-Database_marco.xlsm"
 
     Else
 
@@ -564,9 +564,9 @@ Private Sub CommandButton2_Click()
 
     If test_mode Then
 
-        MainPath = "C:\tools\cut-off\Testing env\_Data_for_Cut_off_Table.xlsx"
+        MainPath = Environ("TOOLS_DIR") & "\Testing env\_Data_for_Cut_off_Table.xlsx"
 
-        MacroPath = "C:\tools\cut-off\Cut_off\Cut-Off-Database_marco.xlsm"
+        MacroPath = Environ("TOOLS_DIR") & "\Cut_off\Cut-Off-Database_marco.xlsm"
 
     Else
 
@@ -1012,7 +1012,7 @@ Private Sub CommandButton2_Click()
 
         
 
-                    'response = MsgBox("Do you want to Create new profile account_id: " & searchText & " ?", vbQuestion + vbYesNo, "Update Confirmation")
+                    'response = MsgBox("Do you want to Create new profile Account ID: " & searchText & " ?", vbQuestion + vbYesNo, "Update Confirmation")
 
                 
 
@@ -1210,11 +1210,11 @@ Private Sub CommandButton4_Click()
 
     If test_mode Then
 
-        folderPath = "C:\tools\cut-off\Testing env\"
+        folderPath = Environ("TOOLS_DIR") & "\Testing env\"
 
-        MainPath = "C:\tools\cut-off\Testing env\_Data_for_Cut_off_Table.xlsx"
+        MainPath = Environ("TOOLS_DIR") & "\Testing env\_Data_for_Cut_off_Table.xlsx"
 
-        MacroPath = "C:\tools\cut-off\Cut_off\Cut-Off-Database_marco.xlsm"
+        MacroPath = Environ("TOOLS_DIR") & "\Cut_off\Cut-Off-Database_marco.xlsm"
 
     Else
 
@@ -2176,7 +2176,7 @@ Private Sub CommandButton7_Click()
 
     ' Count the total number of files in the folder
 
-    fileName = Dir("C:\card_data\summary\done-add-date" & "\StatementCard_*.xlsx")
+    fileName = Dir(Environ("DATA_ROOT") & "\summary\done-add-date" & "\StatementCard_*.xlsx")
 
     Do While fileName <> ""
 
@@ -2190,7 +2190,7 @@ Private Sub CommandButton7_Click()
 
     If totalFiles = 0 Then
 
-        MsgBox ("Bring Statement Card to card_data -> summary -> file")
+        MsgBox ("Bring Statement Card to DATA_ROOT -> summary -> file")
 
         Exit Sub
 

@@ -64,6 +64,23 @@ The system integrates email attachment processing, data comparison, file generat
 
 ---
 
+## ⚙️ Setup after cloning
+
+1. `pip install openpyxl pandas pywin32 xlwings selenium python-dotenv msoffcrypto-tool`
+2. Copy `.env.template` to `.env` and fill in the email account, passwords and folders.
+   `settings.py` reads it for every Python script; nothing is hard-coded.
+3. The Excel macros (`vba/`, `Cutoff.frm`) and `Schedule_summary.vbs` read folders from **Windows**
+   environment variables. Set them once in a Command Prompt, then reopen Excel:
+   ```bat
+   setx DATA_ROOT "C:\card_data"
+   setx SHARED_DIR "C:\Users\<you>\Shared Drive\Team Data\Payment Term"
+   setx TOOLS_DIR "C:\tools\cut-off"
+   setx STATEMENT_SOURCE_DIR "Z:\CutOff\3.Statement Card"
+   setx MACRO_PASSWORD "<workbook password>"
+   ```
+4. If your exports still use an old column prefix, set `LEGACY_COLUMN_PREFIX` in `.env`; headers such as
+   `<prefix>_code` are read as `account_code`. The templates in this repo already use `account_code`.
+
 ## 🔐 Security notes
 
 - Credentials and file paths are read from `.env` (see `.env.template`); `.env` is git-ignored.

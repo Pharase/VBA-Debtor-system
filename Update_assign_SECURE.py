@@ -25,6 +25,7 @@ import win32com.client as win32
 import os
 import sys
 from pathlib import Path
+from settings import neutral_name, read_excel
 
 try:
     from dotenv import load_dotenv
@@ -126,7 +127,7 @@ def main():
         try:
             # Load both files
             print("\n📂 Loading update data...")
-            df_update = pd.read_excel(file2_path, sheet_name="ALL")
+            df_update = read_excel(file2_path, sheet_name="ALL")
             update_dict = df_update.set_index("เลขที่สัญญาใหม่").to_dict("index")
             
             # Load workbook with formulas
@@ -146,7 +147,7 @@ def main():
             }
             
             # Get column indexes
-            headers = [cell.value for cell in ws[1]]
+            headers = [neutral_name(cell.value) for cell in ws[1]]
             col_indexes = {name: headers.index(name) + 1 for name in mapping}
             id_col_index = headers.index("account_code") + 1
             

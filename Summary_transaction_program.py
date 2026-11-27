@@ -12,6 +12,7 @@ from tqdm import tqdm
 from concurrent.futures import ThreadPoolExecutor
 import pandas as pd
 from datetime import datetime
+from settings import data_path, read_excel
 
 
 # In[107]:
@@ -98,7 +99,7 @@ def process_excel_file(file_path):
 def process_excel_file_pandas(file_path):
     try:
         # Read only the necessary cell to get the row count from I3
-        cell_value_df = pd.read_excel(file_path, sheet_name='Payment Term History', 
+        cell_value_df = read_excel(file_path, sheet_name='Payment Term History', 
                                       usecols="I", skiprows=2, nrows=1, header=None)
         cell_count = cell_value_df.iloc[0, 0]
         
@@ -113,7 +114,7 @@ def process_excel_file_pandas(file_path):
             return None
         
         # Read the specified number of rows
-        rows_df = pd.read_excel(file_path, sheet_name='Payment Term History', 
+        rows_df = read_excel(file_path, sheet_name='Payment Term History', 
                                 skiprows=6, nrows=cell_count, 
                                 usecols="A:ED")
         
@@ -136,9 +137,9 @@ def process_excel_file_pandas(file_path):
         return None
 
 # Define the base directory containing the Excel files
-base_folder = r"C:\card_data\summary"
+base_folder = data_path(r"summary")
 subfolders = ["file"]  # You can add more subfolders here "g1", "g2", "g3", "g4", 
-main_data = r"C:\card_data\_Data_CutOff_v16.xlsx"
+main_data = data_path(r"_Data_CutOff_v16.xlsx")
 
 # Get today's date
 today = datetime.today()
@@ -161,7 +162,7 @@ for subfolder in subfolders:
     folder_path = os.path.join(base_folder, subfolder)
     
     # Define the output file path for the combined data
-    temp_file = os.path.join(r"C:\card_data\summary", f"summary_data_{formatted_date}_temp.xlsx")
+    temp_file = os.path.join(data_path(r"summary"), f"summary_data_{formatted_date}_temp.xlsx")
 
     # Collect file paths for Excel files in the current subfolder
     file_list = [os.path.join(folder_path, filename) for filename in os.listdir(folder_path) if filename.startswith("StatementCard_") and filename.endswith(".xlsx")]
@@ -191,7 +192,7 @@ for col_index in columns_to_drop:
 
 print("Data extraction and combination completed.")
 
-summary_temp = r"C:\card_data\summary\_summary_template.xlsx"
+summary_temp = data_path(r"summary\_summary_template.xlsx")
 destb = xw.Book(summary_temp)
 dests = destb.sheets['transaction_record']
 
@@ -229,7 +230,7 @@ for i in range(1, next_row + 1):
 dests.range(f'CU2:CU{count_change}').number_format = '@'
 dests.range(f'CU2').value = cell_values
 
-output_file = os.path.join(r"C:\card_data\summary", f"summary_data_file_{formatted_date}.xlsx")
+output_file = os.path.join(data_path(r"summary"), f"summary_data_file_{formatted_date}.xlsx")
 
 # Save and close the workbook
 destb.save(output_file)

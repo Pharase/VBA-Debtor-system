@@ -11,6 +11,7 @@ import xlwings as xw
 from tqdm import tqdm
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
+from settings import data_path, read_excel, shared_path
 
 
 # Function to convert column index to Excel column letter
@@ -94,7 +95,7 @@ def process_excel_file(file_path):
 def process_excel_file_pandas(file_path):
     try:
         # Read only the necessary cell to get the row count from I3
-        cell_value_df = pd.read_excel(file_path, sheet_name='Payment Term History', 
+        cell_value_df = read_excel(file_path, sheet_name='Payment Term History', 
                                       usecols="K", skiprows=2, nrows=1, header=None)
         cell_count = cell_value_df.iloc[0, 0]
         
@@ -109,7 +110,7 @@ def process_excel_file_pandas(file_path):
             return None
         
         # Read the specified number of rows
-        rows_df = pd.read_excel(file_path, sheet_name='Payment Term History', 
+        rows_df = read_excel(file_path, sheet_name='Payment Term History', 
                                 skiprows=6, nrows=cell_count, 
                                 usecols="A:EG")
         
@@ -132,9 +133,9 @@ def process_excel_file_pandas(file_path):
         return None
 
 # Define the base directory containing the Excel files
-base_folder = r"C:\card_data\summary"
+base_folder = data_path(r"summary")
 subfolders = ["done-add-date"]  # You can add more subfolders here "g1", "g2", "g3", "g4", 
-main_data = r"C:\card_data\_Data_CutOff_v19.xlsx"
+main_data = data_path(r"_Data_CutOff_v19.xlsx")
 
 # Get today's date
 today = datetime.today()
@@ -157,7 +158,7 @@ for subfolder in subfolders:
     folder_path = os.path.join(base_folder, subfolder)
     
     # Define the output file path for the combined data
-    temp_file = os.path.join(r"C:\card_data\summary", f"summary_data_{formatted_date}_temp.xlsx")
+    temp_file = os.path.join(data_path(r"summary"), f"summary_data_{formatted_date}_temp.xlsx")
 
     # Collect file paths for Excel files in the current subfolder
     file_list = [os.path.join(folder_path, filename) for filename in os.listdir(folder_path) if filename.startswith("StatementCard_") and filename.endswith(".xlsx")]
@@ -187,7 +188,7 @@ for col_index in columns_to_drop:
 
 print("Data extraction and combination completed.")
 
-summary_temp = r"C:\card_data\summary\_summary_template_v2.xlsx"
+summary_temp = data_path(r"summary\_summary_template_v2.xlsx")
 destb = xw.Book(summary_temp)
 dests = destb.sheets['transaction_record']
 
@@ -227,7 +228,7 @@ for i in range(1, next_row + 1):
 dests.range(f'CY2:CY{count_change}').number_format = '@'
 dests.range(f'CY2').value = cell_values
 
-output_file = os.path.join(r"C:\card_data\summary", f"summary_data_file_{formatted_date}.xlsx")
+output_file = os.path.join(data_path(r"summary"), f"summary_data_file_{formatted_date}.xlsx")
 
 # Update Cost
 dests = destb.sheets['Cost']
@@ -266,24 +267,24 @@ Cut_column_summary(output_file)
 from move_file import copy_files_created_today
 
 # Example usage
-source_directory1 = "C:\card_data/summary/done-add-date"  # Replace with your source directory
+source_directory1 = data_path(r"summary/done-add-date")  # Replace with your source directory
 target_directory1 = "Z:/CutOff/3.Statement Card"  # Replace with your target directory
 copy_files_created_today(source_directory1, target_directory1)
 
-source_directory2 = "C:\card_data/summary"  # Replace with your source directory
+source_directory2 = data_path(r"summary")  # Replace with your source directory
 target_directory2 = "Z:/CutOff/6.Summary"  # Replace with your target directory
 copy_files_created_today(source_directory2, target_directory2)
 
 source_directory3 = "Z:/CutOff/4.Daily Report"  # Replace with your source directory
-target_directory3 = "C:/Users/<user>/Shared Drive/Team Data/Data For QMC/Payment Term/3-Daily Database"  # Replace with your target directory
+target_directory3 = shared_path(r"3-Daily Database")  # Replace with your target directory
 copy_files_created_today(source_directory3, target_directory3)
 
-source_directory4 = "C:\card_data/summary"  # Replace with your source directory
-target_directory4 = "C:/Users/<user>/Shared Drive/Team Data/Data For QMC/Payment Term/7-Summary"  # Replace with your target directory
+source_directory4 = data_path(r"summary")  # Replace with your source directory
+target_directory4 = shared_path(r"7-Summary")  # Replace with your target directory
 copy_files_created_today(source_directory4, target_directory4)
 
-source_directory5 = "C:\card_data/summary/done-add-date"  # Replace with your source directory
-target_directory5 = "C:/Users/<user>/Shared Drive/Team Data/Data For QMC/Payment Term/2-Cut-off Table"  # Replace with your target directory
+source_directory5 = data_path(r"summary/done-add-date")  # Replace with your source directory
+target_directory5 = shared_path(r"2-Cut-off Table")  # Replace with your target directory
 copy_files_created_today(source_directory5, target_directory5)
 
 #Mailing

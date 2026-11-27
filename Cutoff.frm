@@ -106,12 +106,12 @@ Private Sub CommandButton1_Click()
     
     'set excel instance
     Set xlApp = CreateObject("Excel.Application")
-    'foundFile = FindExcelFile("C:\Users\" & User_name & "\Shared Drive\Team Data\Data For QMC\Payment Term\Cutoff-beta\Payment report\", "Data_Status")
+    'foundFile = FindExcelFile(Environ("SHARED_DIR") & "\Cutoff-beta\Payment report\", "Data_Status")
     On Error Resume Next
     
     If test_mode Then
-        MainPath = "C:\tools\cut-off\Testing env\_Data_for_Cut_off_Table.xlsx"
-        MacroPath = "C:\tools\cut-off\Cut_off\Cut-Off-Database_marco.xlsm"
+        MainPath = Environ("TOOLS_DIR") & "\Testing env\_Data_for_Cut_off_Table.xlsx"
+        MacroPath = Environ("TOOLS_DIR") & "\Cut_off\Cut-Off-Database_marco.xlsm"
     Else
         MainPath = TextBox2.Value
         MacroPath = TextBox3.Value
@@ -258,8 +258,8 @@ Private Sub CommandButton2_Click()
     
     On Error Resume Next
     If test_mode Then
-        MainPath = "C:\tools\cut-off\Testing env\_Data_for_Cut_off_Table.xlsx"
-        MacroPath = "C:\tools\cut-off\Cut_off\Cut-Off-Database_marco.xlsm"
+        MainPath = Environ("TOOLS_DIR") & "\Testing env\_Data_for_Cut_off_Table.xlsx"
+        MacroPath = Environ("TOOLS_DIR") & "\Cut_off\Cut-Off-Database_marco.xlsm"
     Else
         MainPath = TextBox2.Value
         MacroPath = ThisWorkbook.Sheets("Hold_Cutting").Range("AM13").Value 'TextBox3.Value
@@ -425,7 +425,7 @@ Private Sub CommandButton2_Click()
             Else
                     'MsgBox "File not found."
         
-                    'response = MsgBox("Do you want to Create new profile account_id: " & searchText & " ?", vbQuestion + vbYesNo, "Update Confirmation")
+                    'response = MsgBox("Do you want to Create new profile Account ID: " & searchText & " ?", vbQuestion + vbYesNo, "Update Confirmation")
                 
                     'If response = vbYes Then
                             foundFile = folderPath & TempName
@@ -524,9 +524,9 @@ Private Sub CommandButton4_Click()
     
     On Error Resume Next
     If test_mode Then
-        folderPath = "C:\tools\cut-off\Testing env\"
-        MainPath = "C:\tools\cut-off\Testing env\_Data_for_Cut_off_Table.xlsx"
-        MacroPath = "C:\tools\cut-off\Cut_off\Cut-Off-Database_marco.xlsm"
+        folderPath = Environ("TOOLS_DIR") & "\Testing env\"
+        MainPath = Environ("TOOLS_DIR") & "\Testing env\_Data_for_Cut_off_Table.xlsx"
+        MacroPath = Environ("TOOLS_DIR") & "\Cut_off\Cut-Off-Database_marco.xlsm"
     Else
         MainPath = ThisWorkbook.Sheets("Hold_Cutting").Range("AM13").Value 'TextBox2.Value
         MacroPath = TextBox3.Value
@@ -854,14 +854,14 @@ End Sub
 
 Private Sub CommandButton7_Click()
     ' Count the total number of files in the folder
-    filename = Dir("C:\card_data\summary\file" & "\StatementCard_*.xlsx")
+    filename = Dir(Environ("DATA_ROOT") & "\summary\file" & "\StatementCard_*.xlsx")
     Do While filename <> ""
         totalFiles = totalFiles + 1
         filename = Dir
     Loop
     
     If totalFiles = 0 Then
-        MsgBox ("Bring Statement Card to card_data -> summary -> file")
+        MsgBox ("Bring Statement Card to DATA_ROOT -> summary -> file")
         Exit Sub
     Else
         TextBox4.Text = "Summary total  " & totalFiles & " File"

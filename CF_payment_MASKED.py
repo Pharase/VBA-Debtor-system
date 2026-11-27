@@ -21,6 +21,7 @@ from datetime import datetime
 import time
 import glob
 import re
+from settings import read_excel
 
 # ⚠️ SECURITY: Import these libraries
 try:
@@ -339,10 +340,10 @@ def process_payment_file(cf_file, output_path):
     latest_sheet = month_sheet_names[-1]
     
     # Read payment data
-    df_temp = pd.read_excel(cf_file, sheet_name=latest_sheet, usecols="B", dtype=str, skiprows=[0])
+    df_temp = read_excel(cf_file, sheet_name=latest_sheet, usecols="B", dtype=str, skiprows=[0])
     last_row = df_temp["Month"].last_valid_index() + 1
     
-    df = pd.read_excel(
+    df = read_excel(
         cf_file,
         sheet_name=latest_sheet,
         skiprows=[0],
@@ -364,7 +365,7 @@ def process_payment_file(cf_file, output_path):
     dupplicate_summary = ["account_code", "EFF_Date", "Pay_Date"]
     dupplicate_payment = ["New Contract Number", "Statement date", "Payment Date"]
     
-    summary_df = pd.read_excel(summary_file, usecols=dupplicate_summary, dtype=str)
+    summary_df = read_excel(summary_file, usecols=dupplicate_summary, dtype=str)
     summary_df.replace("-", pd.NA, inplace=True)
     summary_df.dropna(inplace=True)
     summary_df.reset_index(drop=True, inplace=True)

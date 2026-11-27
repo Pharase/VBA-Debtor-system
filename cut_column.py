@@ -3,6 +3,7 @@ from openpyxl import load_workbook
 from openpyxl.utils import get_column_letter
 from tkinter import Tk, filedialog, messagebox
 import os
+from settings import read_excel
 
 # List of columns to keep (case-sensitive match to Excel headers)
 columns_to_keep = [
@@ -29,7 +30,7 @@ def Cut_column_summary(source_dir):
         return
 
     try:
-        df = pd.read_excel(file_path, sheet_name="transaction_record", engine="openpyxl")
+        df = read_excel(file_path, sheet_name="transaction_record", engine="openpyxl")
     except Exception as e:
         messagebox.showerror("Error", f"Failed to open the file or sheet:\n{e}")
         return

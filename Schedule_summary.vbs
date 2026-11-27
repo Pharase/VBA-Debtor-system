@@ -1,6 +1,8 @@
-'Input source and destination folder paths
-SourceFolder = "Z:\CutOff\3.Statement Card"
-DestinationFolder = "C:\card_data\summary\file"
+'Folders come from Windows environment variables (set once with setx, see README)
+Set sh = CreateObject("WScript.Shell")
+DataRoot = sh.ExpandEnvironmentStrings("%DATA_ROOT%")
+SourceFolder = sh.ExpandEnvironmentStrings("%STATEMENT_SOURCE_DIR%")
+DestinationFolder = DataRoot & "\summary\file"
 
 'Create a FileSystemObject
 Set fso = CreateObject("Scripting.FileSystemObject")
@@ -25,7 +27,7 @@ Else
 End If
 
 'Input Excel File's Full Path
-  ExcelFilePath = "C:\card_data\processing\program\CardProgram_Tran_v15.xlsm"
+  ExcelFilePath = DataRoot & "\processing\program\CardProgram_Tran_v15.xlsm"
 
 'Input Module/Macro name within the Excel File
   MacroPath = "Module5.SummaryCard"

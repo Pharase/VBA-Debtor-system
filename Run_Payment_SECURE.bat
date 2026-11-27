@@ -20,7 +20,8 @@ echo.
 
 REM Activate conda environment
 echo [1/3] Activating Python environment...
-CALL "C:\Users\<user>\miniconda3\Scripts\activate.bat" activate base
+CALL "%USERPROFILE%\miniconda3\Scripts\activate.bat" base
+cd /d "%~dp0"
 
 if errorlevel 1 (
     echo ERROR: Failed to activate Python environment
@@ -32,7 +33,7 @@ REM Run payment download and processing
 echo.
 echo [2/3] Running payment file processing...
 echo (Uses CF_payment_SECURE.py - credentials from .env)
-python "C:\card_data\processing\program\CF_payment_SECURE.py"
+python "%~dp0CF_payment_SECURE.py"
 
 if errorlevel 1 (
     echo ERROR: Payment processing failed
@@ -44,7 +45,7 @@ REM Run macro execution
 echo.
 echo [3/3] Running Excel macro...
 echo (Uses macro_load_file_SECURE.py - paths from .env)
-python "C:\card_data\processing\program\macro_load_file_SECURE.py"
+python "%~dp0macro_load_file_SECURE.py"
 
 if errorlevel 1 (
     echo WARNING: Macro execution failed, but payment processing completed
